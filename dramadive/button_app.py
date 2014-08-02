@@ -1,14 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 from select import select
 from sys import exit, stderr
 from time import sleep
 
-_bytes = [0x0 for b in range(0, 8)]
-_bytes[0] = 0x08
-_bytes[7] = 0x02
-WRITE_STRING = "".join(map(chr, _bytes))
+WRITE_BYTES = [0x0 for b in range(0, 8)]
+WRITE_BYTES[0] = 0x08
+WRITE_BYTES[7] = 0x02
 CLOSED = 0x15
 OPEN = 0x17
 DOWN = 0x16
@@ -21,7 +20,8 @@ def main():
     return_code = 0
     try:
         while True:
-            data = fd.write(bytes(_bytes))
+
+            data = fd.write(bytes(WRITE_BYTES))
             data = fd.read(8)
             if data is not None and data[0] != last:
                 if data[0] == CLOSED:
