@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import requests
 from select import select
 from sys import exit, stderr
 from time import sleep
@@ -25,14 +26,15 @@ def main():
             data = fd.read(8)
             if data is not None and data[0] != last:
                 if data[0] == CLOSED:
-                    print('closed')
+                    action = 'closed'
                 elif last == DOWN and data[0] == OPEN:
-                    print('up')
+                    action = 'up'
                 elif data[0] == OPEN:
-                    print('open')
+                    action = 'open'
                 elif data[0] == DOWN:
-                    print('down')
+                    action = 'down'
                 last = data[0]
+                requests.post('http://requestb.in/ok0w6bok', data={"action": action})
             sleep(0.1)
 
     except KeyboardInterrupt:
